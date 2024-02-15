@@ -26,7 +26,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             Form {
-                VStack(alignment: .leading, spacing: 5) {
+                Section {
                     Text("When do you want to wake up?")
                         .font(.headline)
                     
@@ -42,10 +42,16 @@ struct ContentView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 5) {
-                    Text("Daily coffee intake")
-                        .font(.headline)
+//                    Text("Daily coffee intake")
+//                        .font(.headline)
                     
-                    Stepper("^[\(coffeeAmount) cup](inflect: true)", value: $coffeeAmount, in:  1...20)
+//                    Stepper("^[\(coffeeAmount) cup](inflect: true)", value: $coffeeAmount, in:  1...20)
+                    
+                    Picker("Daily coffee intake", selection: $coffeeAmount) {
+                        ForEach(0...20, id: \.self) {
+                            Text("\($0) cup\($0 == 1 ? "" : "s")")
+                        }
+                    }
                 }
                 
             }
@@ -58,6 +64,8 @@ struct ContentView: View {
                 Button("OK") {}
             } message: {
                 Text(alertMessage)
+                    .font(.headline)
+                    .fontWeight(.bold)
             }
         }
     }
@@ -78,7 +86,7 @@ struct ContentView: View {
             
             let sleepTime = wakeUp - prediction.actualSleep
             
-            alertTitle = "Your ideal bedtime is..."
+            alertTitle = "Your ideal bedtime is:"
             alertMessage = sleepTime.formatted(date: .omitted, time: .shortened)
         } catch {
             alertTitle = "Error"
